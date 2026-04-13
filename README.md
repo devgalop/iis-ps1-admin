@@ -7,6 +7,8 @@ Este proyecto es una colección de scripts utiles para administrar IIS. Estos sc
 - `set_default_values.ps1`: Configura valores por defecto para nuevos sitios y pools de aplicaciones.
 - `create_sites_and_pools.ps1`: Crea sitios y pools de aplicaciones a partir de un archivo CSV.
 - `deploy_app.ps1`: Emula un despliegue continuo para aplicaciones web en IIS.
+- `turn_on_sites_and_pools.ps1`: Enciende los sitios y pools de aplicaciones creados.
+- `turn_off_sites_and_pools.ps1`: Apaga los sitios y pools de aplicaciones creados.
 
 ## Prerequisitos
 
@@ -15,6 +17,7 @@ Este proyecto es una colección de scripts utiles para administrar IIS. Estos sc
 - Permisos de administrador para ejecutar los scripts
 - Archivo CSV con la configuración de los sitios y pools de aplicaciones (para `create_sites_and_pools.ps1`)
 - Archivo .env con las variables de entorno necesarias para la configuración (para `set_default_values.ps1`)
+- Archivo CSV con la configuración de encendido y apagado de sitios y pools de aplicaciones (para `turn_on_sites_and_pools.ps1` y `turn_off_sites_and_pools.ps1`)
 
 ## Uso
 
@@ -96,6 +99,35 @@ Para ejecutar el script, simplemente ejecuta el siguiente comando en PowerShell:
 - `-SourcePath`: La ruta de origen donde se encuentran los archivos de la aplicación que se van a desplegar.
 
 **NOTA**: La ruta de destino para la aplicación se determinará automáticamente a partir de la configuración del sitio en IIS.
+
+## Ejecución de scripts turn_on_sites_and_pools.ps1 y turn_off_sites_and_pools.ps1
+
+Los scripts `turn_on_sites_and_pools.ps1` y `turn_off_sites_and_pools.ps1` permiten encender y apagar los sitios y pools de aplicaciones creados en IIS a partir de un archivo CSV. Asegúrate de tener un archivo CSV `sites_status.csv` con la configuración de los sitios y pools de aplicaciones antes de ejecutar los scripts.
+
+El archivo `sites_status.csv` debe contener las siguientes columnas:
+
+```csv
+SiteName,TurnOnURL,TurnOffURL
+Example,http://localhost:8080/turnon,http://localhost:8080/turnoff
+```
+
+- `SiteName`: El nombre del sitio en IIS.
+- `TurnOnURL`: La URL que se utilizará para encender el sitio y pool de aplicaciones.
+- `TurnOffURL`: La URL que se utilizará para apagar el sitio y pool de aplicaciones.
+
+Para ejecutar el script de encendido, simplemente ejecuta el siguiente comando en PowerShell:
+
+```bash
+# La variable CsvPath debe apuntar al archivo CSV con la configuración de los sitios y pools de aplicaciones
+.\turn_on_sites_and_pools.ps1 -CsvPath "C:\IIS_Administration\sites_status.csv"
+```
+
+Para ejecutar el script de apagado, simplemente ejecuta el siguiente comando en PowerShell:
+
+```bash
+# La variable CsvPath debe apuntar al archivo CSV con la configuración de los sitios y pools de aplicaciones
+.\turn_off_sites_and_pools.ps1 -CsvPath "C:\IIS_Administration\sites_status.csv"
+```
 
 ## Revision de logs
 
